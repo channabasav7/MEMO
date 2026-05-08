@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'Screens/HomeScreen.dart';
+import 'Screens/LandingScreen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -11,21 +11,51 @@ class MyApp extends StatelessWidget {
       title: 'Favorite Places',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 254, 211, 155),
-        appBarTheme: AppBarTheme(backgroundColor: Colors.orangeAccent),
-        textTheme: TextTheme(
-          bodyLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-          bodyMedium: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
-          bodySmall: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFE07A5F),
+          primary: const Color(0xFFE07A5F),
+          secondary: const Color(0xFF81B29A),
+          surface: Colors.white,
+        ),
+        scaffoldBackgroundColor: const Color(0xFFFDF6EC),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFF7B267),
+          elevation: 0,
+          foregroundColor: Color(0xFF2B2118),
+        ),
+        textTheme: const TextTheme(
+          headlineLarge: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
+          bodyLarge: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+          bodyMedium: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+          bodySmall: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: const Color(0xFFFFFBF6),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: Color(0xFFE6D3BE)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: Color(0xFFE07A5F), width: 2),
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.orange,
+            backgroundColor: const Color(0xFFE07A5F),
             foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
           ),
         ),
       ),
-      home: HomeScreen(),
+      home: const LandingScreen(),
     );
   }
 }

@@ -24,7 +24,9 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
       return;
     }
     if (_selectedImage == null) {
-      // You might want to show an error to the user here
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please add a photo first.')),
+      );
       return;
     }
     ref.read(favPlaceProvider.notifier).addPlace(
@@ -68,36 +70,19 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
         child: Form(
           key: _formKey,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
             child: Column(
               children: [
-                _selectedImage == null
-                    ? SizedBox(
-                        height: 200,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _pickImage,
-                          child: const Icon(Icons.image_outlined, size: 200),
-                          style: ElevatedButton.styleFrom(
-                            shape: const RoundedRectangleBorder(),
-                            padding: const EdgeInsets.all(20),
-                            backgroundColor: Colors.orange,
-                            foregroundColor: Colors.white,
-                          ),
-                        ),
-                      )
-                    : Image.file(
-                        _selectedImage!,
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                const SizedBox(height: 20),
+                _ImagePickerCard(
+                  selectedImage: _selectedImage,
+                  onPickImage: _pickImage,
+                ),
+                const SizedBox(height: 18),
                 TextFormField(
                   controller: _titleController,
                   decoration: const InputDecoration(
                     labelText: "Title",
-                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.title_outlined),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -106,13 +91,14 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 22),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _descriptionController,
                   decoration: const InputDecoration(
                     labelText: "Description",
-                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.note_alt_outlined),
                   ),
+                  maxLines: 3,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter Description";
@@ -120,7 +106,7 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 22),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -135,11 +121,14 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
                         ).textTheme.bodyMedium!.copyWith(color: Colors.red),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: _savePlace,
-                      child: Text(
-                        'Save',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                    SizedBox(
+                      width: 140,
+                      child: ElevatedButton(
+                        onPressed: _savePlace,
+                        child: Text(
+                          'Save',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ),
                     ),
                   ],
@@ -149,6 +138,65 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ImagePickerCard extends StatelessWidget {
+  const _ImagePickerCard({required this.selectedImage, required this.onPickImage});
+
+  final File? selectedImage;
+  final VoidCallback onPickImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 210,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFFBF6),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFFE6D3BE)),
+      ),
+      child: selectedImage == null
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.image_outlined, size: 64, color: Color(0xFFE07A5F)),
+                const SizedBox(height: 8),
+                Text(
+                  'Add a photo',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 160,
+                  child: OutlinedButton.icon(
+                    onPressed: onPickImage,
+                    icon: const Icon(Icons.upload_outlined),
+                    label: const Text('Pick Image'),
+                  ),
+                ),
+              ],
+            )
+          : Stack(
+              fit: StackFit.expand,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: Image.file(selectedImage!, fit: BoxFit.cover),
+                ),
+                Positioned(
+                  right: 12,
+                  bottom: 12,
+                  child: FilledButton.icon(
+                    onPressed: onPickImage,
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Replace'),
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
