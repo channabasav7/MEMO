@@ -62,10 +62,11 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-flutter_icons:
+flutter_launcher_icons:
   android: true
   ios: true
   image_path: assets/icons/app_icon.png
+  remove_alpha_ios: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:
