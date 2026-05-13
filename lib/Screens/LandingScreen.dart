@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:favoriteplaces/provider/auth_provider.dart';
 
 import 'HomeScreen.dart';
+import 'LoginScreen.dart';
 
-class LandingScreen extends StatelessWidget {
+class LandingScreen extends ConsumerWidget {
   const LandingScreen({super.key});
 
   void _goToHome(BuildContext context) {
@@ -11,8 +14,15 @@ class LandingScreen extends StatelessWidget {
     );
   }
 
+  void _goToLogin(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 

@@ -1,6 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:favoriteplaces/provider/auth_provider.dart';
 
 import 'Screens/LandingScreen.dart';
+import 'Screens/HomeScreen.dart';
+import 'Screens/LoginScreen.dart';
+import 'Screens/SignupScreen.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(ProviderScope(child: const MyApp()));
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -55,7 +70,34 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const LandingScreen(),
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/login':
+            return MaterialPageRoute(builder: (_) => const LoginScreen());
+          case '/signup':
+            return MaterialPageRoute(builder: (_) => const SignupScreen());
+          case '/home':
+            return MaterialPageRoute(builder: (_) => const HomeScreen());
+          default:
+            return MaterialPageRoute(builder: (_) => const LandingScreen());
+        }
+      },
+      home: const AuthWrapper(),
     );
+  }
+}
+
+class AuthWrapper extends ConsumerWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+
+    if (authState.isLoggedIn) {
+      return const HomeScreen();
+    } else {
+      return const LandingScreen();
+    }
   }
 }
