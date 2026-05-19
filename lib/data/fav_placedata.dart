@@ -1,13 +1,13 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 
 class FavPlace {
   final String id;
   final String title;
   final String note;
-  final File? image; // Local image file (for new uploads)
-  final String? imageUrl; // Firebase Storage URL
-  final String? docId; // Firestore document ID
+  final Uint8List? imageBytes;
+  final String? imageUrl;
+  final String? docId;
   final String? userId;
   final double? latitude;
   final double? longitude;
@@ -19,7 +19,7 @@ class FavPlace {
     required this.id,
     required this.title,
     required this.note,
-    this.image,
+    this.imageBytes,
     this.imageUrl,
     this.docId,
     this.userId,
@@ -30,45 +30,50 @@ class FavPlace {
     this.updatedAt,
   });
 
-  /// Create from Firestore document
   factory FavPlace.fromMap(Map<String, dynamic> map) {
     return FavPlace(
       id: map['id'] ?? '',
       title: map['title'] ?? '',
       note: map['note'] ?? '',
+      imageBytes: map['imageBase64'] != null
+          ? base64Decode(map['imageBase64'] as String)
+          : null,
       imageUrl: map['imageUrl'],
       docId: map['docId'],
       userId: map['userId'],
       latitude: (map['latitude'] as num?)?.toDouble(),
       longitude: (map['longitude'] as num?)?.toDouble(),
       address: map['address'],
-      createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
-      updatedAt: (map['updatedAt'] as Timestamp?)?.toDate(),
+      createdAt: map['createdAt'] != null
+          ? DateTime.tryParse(map['createdAt'].toString())
+          : null,
+      updatedAt: map['updatedAt'] != null
+          ? DateTime.tryParse(map['updatedAt'].toString())
+          : null,
     );
   }
 
-  /// Convert to map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'title': title,
       'note': note,
+      'imageBase64': imageBytes != null ? base64Encode(imageBytes!) : null,
       'imageUrl': imageUrl,
       'userId': userId,
       'latitude': latitude,
       'longitude': longitude,
       'address': address,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 
-  /// Copy with method for easy updates
   FavPlace copyWith({
     String? id,
     String? title,
     String? note,
-    File? image,
+    Uint8List? imageBytes,
     String? imageUrl,
     String? docId,
     String? userId,
@@ -82,7 +87,7 @@ class FavPlace {
       id: id ?? this.id,
       title: title ?? this.title,
       note: note ?? this.note,
-      image: image ?? this.image,
+      imageBytes: imageBytes ?? this.imageBytes,
       imageUrl: imageUrl ?? this.imageUrl,
       docId: docId ?? this.docId,
       userId: userId ?? this.userId,

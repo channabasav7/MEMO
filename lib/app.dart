@@ -25,7 +25,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Favorite Places',
       debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.light,
       theme: ThemeData(
+        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFE07A5F),
           primary: const Color(0xFFE07A5F),

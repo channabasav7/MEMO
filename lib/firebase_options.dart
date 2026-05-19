@@ -4,11 +4,8 @@ import 'dart:io' show Platform;
 
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    // For web builds, `dart:io` Platform APIs are unavailable.
-    // Return Android options as a safe default for web; replace with
-    // proper web FirebaseOptions if available.
     if (kIsWeb) {
-      return android;
+      return web;
     }
     if (Platform.isIOS) {
       return ios;
@@ -27,6 +24,16 @@ class DefaultFirebaseOptions {
     messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
     projectId: 'YOUR_PROJECT_ID',
     storageBucket: 'YOUR_STORAGE_BUCKET',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCUD7RUdaRw3bT0e_J_JimId_396myj3D8',
+    authDomain: 'memo-8645c.firebaseapp.com',
+    projectId: 'memo-8645c',
+    storageBucket: 'memo-8645c.firebasestorage.app',
+    messagingSenderId: '496082759757',
+    appId: '1:496082759757:web:55c433f6ea60c4a4e8ac04',
+    measurementId: 'G-R2QCT01TFY',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

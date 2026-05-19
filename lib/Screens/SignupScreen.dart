@@ -146,160 +146,165 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             ),
           ),
           SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Create Account',
-                      style: theme.textTheme.headlineLarge?.copyWith(
-                        color: const Color(0xFF2B2118),
-                        fontWeight: FontWeight.w800,
-                      ),
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 520),
+                  child: Card(
+                    elevation: 0,
+                    color: Colors.white.withValues(alpha: 0.92),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Start exploring and save your favorite places',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: const Color(0xFF3D2F22),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    // Email Field
-                    Text(
-                      'Email',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      enabled: !authState.isLoading,
-                      decoration: InputDecoration(
-                        hintText: 'your@email.com',
-                        errorText: _emailError,
-                        prefixIcon: const Icon(Icons.email_outlined),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Password Field
-                    Text(
-                      'Password',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: _obscurePassword,
-                      enabled: !authState.isLoading,
-                      decoration: InputDecoration(
-                        hintText: 'At least 6 characters',
-                        errorText: _passwordError,
-                        prefixIcon: const Icon(Icons.lock_outlined),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 56,
+                            height: 56,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFFFDE8DD),
+                            ),
+                            child: const Icon(Icons.person_add_alt_1_outlined, color: Color(0xFFE07A5F)),
                           ),
-                          onPressed: () {
-                            setState(
-                              () => _obscurePassword = !_obscurePassword,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Confirm Password Field
-                    Text(
-                      'Confirm Password',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: _confirmPasswordController,
-                      obscureText: _obscureConfirm,
-                      enabled: !authState.isLoading,
-                      decoration: InputDecoration(
-                        hintText: 'Repeat your password',
-                        errorText: _confirmError,
-                        prefixIcon: const Icon(Icons.lock_outlined),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscureConfirm
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
+                          const SizedBox(height: 18),
+                          Text(
+                            'Create Account',
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              color: const Color(0xFF2B2118),
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
-                          onPressed: () {
-                            setState(
-                              () => _obscureConfirm = !_obscureConfirm,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Terms Checkbox
-                    CheckboxListTile(
-                      value: _agreedToTerms,
-                      onChanged: authState.isLoading
-                          ? null
-                          : (value) {
-                              setState(() => _agreedToTerms = value ?? false);
-                            },
-                      title: const Text('I agree to Terms & Conditions'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                    const SizedBox(height: 30),
-                    // Signup Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed:
-                            authState.isLoading ? null : _handleSignup,
-                        child: authState.isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white,
-                                  ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Start exploring and save your favorite places with a clean, secure account.',
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              color: const Color(0xFF3D2F22),
+                            ),
+                          ),
+                          const SizedBox(height: 28),
+                          Text(
+                            'Email',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            enabled: !authState.isLoading,
+                            decoration: InputDecoration(
+                              hintText: 'your@email.com',
+                              errorText: _emailError,
+                              prefixIcon: const Icon(Icons.email_outlined),
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          Text(
+                            'Password',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: _passwordController,
+                            obscureText: _obscurePassword,
+                            enabled: !authState.isLoading,
+                            decoration: InputDecoration(
+                              hintText: 'At least 6 characters',
+                              errorText: _passwordError,
+                              prefixIcon: const Icon(Icons.lock_outlined),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscurePassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
                                 ),
-                              )
-                            : const Text('Create Account'),
+                                onPressed: () {
+                                  setState(() => _obscurePassword = !_obscurePassword);
+                                },
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          Text(
+                            'Confirm Password',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: _confirmPasswordController,
+                            obscureText: _obscureConfirm,
+                            enabled: !authState.isLoading,
+                            decoration: InputDecoration(
+                              hintText: 'Repeat your password',
+                              errorText: _confirmError,
+                              prefixIcon: const Icon(Icons.lock_outlined),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscureConfirm
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                ),
+                                onPressed: () {
+                                  setState(() => _obscureConfirm = !_obscureConfirm);
+                                },
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          CheckboxListTile(
+                            value: _agreedToTerms,
+                            onChanged: authState.isLoading
+                                ? null
+                                : (value) {
+                                    setState(() => _agreedToTerms = value ?? false);
+                                  },
+                            title: const Text('I agree to Terms & Conditions'),
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: authState.isLoading ? null : _handleSignup,
+                              child: authState.isLoading
+                                  ? const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                      ),
+                                    )
+                                  : const Text('Create Account'),
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Already have an account? ', style: theme.textTheme.bodySmall),
+                              TextButton(
+                                onPressed: authState.isLoading
+                                    ? null
+                                    : () => Navigator.of(context).pushReplacementNamed('/login'),
+                                child: const Text('Sign In'),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    // Login Link
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Already have an account? ',
-                          style: theme.textTheme.bodySmall,
-                        ),
-                        TextButton(
-                          onPressed:
-                              authState.isLoading ? null : () {
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/login');
-                              },
-                          child: const Text('Sign In'),
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),

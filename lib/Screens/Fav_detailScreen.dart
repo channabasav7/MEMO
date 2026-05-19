@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:favoriteplaces/data/fav_placedata.dart';
 
 class FavDetailScreen extends StatelessWidget {
@@ -11,55 +10,44 @@ class FavDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(favPlace.title)),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
+        padding: const EdgeInsets.all(16),
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: (kIsWeb)
-                ? (favPlace.imageUrl != null
-                    ? Image.network(
-                        favPlace.imageUrl!,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 250,
-                      )
-                    : Container(
-                        width: double.infinity,
-                        height: 250,
-                        color: Colors.grey[200],
-                        child: const Icon(Icons.image_not_supported, size: 64),
-                      ))
-                : (favPlace.image != null
-                    ? Image.file(
-                        favPlace.image!,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 250,
-                      )
-                    : (favPlace.imageUrl != null
-                        ? Image.network(
-                            favPlace.imageUrl!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: 250,
-                          )
-                        : Container(
-                            width: double.infinity,
-                            height: 250,
-                            color: Colors.grey[200],
-                            child: const Icon(Icons.image_not_supported, size: 64),
-                          ))),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: AspectRatio(
+              aspectRatio: 4 / 3,
+              child: favPlace.imageBytes != null
+                  ? Image.memory(favPlace.imageBytes!, fit: BoxFit.cover)
+                  : Container(
+                      color: Colors.grey[200],
+                      child: const Icon(Icons.image_not_supported, size: 64),
+                    ),
+            ),
           ),
           const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(favPlace.title, style: Theme.of(context).textTheme.bodyLarge),
+          Text(
+            favPlace.title,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w800),
           ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(favPlace.note, style: Theme.of(context).textTheme.bodyMedium),
+          const SizedBox(height: 8),
+          if (favPlace.address != null && favPlace.address!.isNotEmpty)
+            Row(
+              children: [
+                const Icon(Icons.location_on_outlined, size: 18, color: Colors.grey),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    favPlace.address!,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[700]),
+                  ),
+                ),
+              ],
+            ),
+          const SizedBox(height: 16),
+          Text(
+            favPlace.note,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(height: 1.5),
           ),
         ],
       ),

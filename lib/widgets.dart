@@ -345,24 +345,22 @@ class _AnimatedFABState extends State<AnimatedFAB>
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         if (widget.secondaryActions != null && _isOpen)
-          ...widget.secondaryActions!.map((action) {
-            return ScaleTransition(
-              scale: Tween<double>(begin: 0, end: 1).animate(
-                CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: FloatingActionButton.small(
-                  onPressed: () {
-                    action.onTap();
-                    _toggleMenu();
-                  },
-                  tooltip: action.label,
-                  child: Icon(action.icon),
+          ...widget.secondaryActions!.map((action) => ScaleTransition(
+                scale: Tween<double>(begin: 0, end: 1).animate(
+                  CurvedAnimation(parent: _controller, curve: Curves.easeOut),
                 ),
-              ),
-            );
-          }).toList(),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: FloatingActionButton.small(
+                    onPressed: () {
+                      action.onTap();
+                      _toggleMenu();
+                    },
+                    tooltip: action.label,
+                    child: Icon(action.icon),
+                  ),
+                ),
+              )),
         FloatingActionButton(
           onPressed: () {
             if (widget.secondaryActions != null) {

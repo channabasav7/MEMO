@@ -1,5 +1,4 @@
 import 'package:favoriteplaces/data/fav_placedata.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart' show StateNotifier, StateNotifierProvider;
 
 class FavPlaceProvider extends StateNotifier<List<FavPlace>> {

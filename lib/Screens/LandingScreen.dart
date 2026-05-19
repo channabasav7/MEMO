@@ -1,28 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:favoriteplaces/provider/auth_provider.dart';
-
-import 'HomeScreen.dart';
-import 'LoginScreen.dart';
 
 class LandingScreen extends ConsumerWidget {
   const LandingScreen({super.key});
 
-  void _goToHome(BuildContext context) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
-    );
+  void _goToLogin(BuildContext context) {
+    Navigator.of(context).pushNamed('/login');
   }
 
-  void _goToLogin(BuildContext context) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-    );
+  void _goToSignup(BuildContext context) {
+    Navigator.of(context).pushNamed('/signup');
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
@@ -91,15 +82,24 @@ class LandingScreen extends ConsumerWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
-                      onPressed: () => _goToHome(context),
-                      icon: const Icon(Icons.explore_outlined),
-                      label: const Text('Start Exploring'),
+                      onPressed: () => _goToLogin(context),
+                      icon: const Icon(Icons.login_outlined),
+                      label: const Text('Sign In'),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () => _goToSignup(context),
+                      icon: const Icon(Icons.person_add_outlined),
+                      label: const Text('Create Account'),
                     ),
                   ),
                   const SizedBox(height: 10),
                   Center(
                     child: Text(
-                      'Keep your places close, even when you travel far.',
+                      'Your favorites stay on this device until you delete them.',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: const Color(0xFF4A3A2C),
                       ),
