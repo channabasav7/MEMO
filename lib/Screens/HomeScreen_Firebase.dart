@@ -144,24 +144,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     padding: const EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        place.imageUrl != null
-                            ? NetworkImageWidget(
-                                imageUrl: place.imageUrl!,
-                                size: 64,
-                                borderRadius: BorderRadius.circular(12),
-                              )
-                            : Container(
-                                width: 64,
-                                height: 64,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Colors.grey[300],
-                                ),
-                                child: const Icon(
-                                  Icons.image_not_supported,
-                                  color: Colors.grey,
-                                ),
-                              ),
+                        if (place.imageUrl != null)
+                          NetworkImageWidget(
+                            imageUrl: place.imageUrl!,
+                            size: 64,
+                            borderRadius: BorderRadius.circular(12),
+                          )
+                        else
+                          Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.grey[300],
+                            ),
+                            child: const Icon(
+                              Icons.image_not_supported,
+                              color: Colors.grey,
+                            ),
+                          ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Column(
@@ -217,12 +218,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ],
                     ),
                   ),
-                );
-              };
+                ),
+              );
             },
           );
         },
-      ),
+        ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(

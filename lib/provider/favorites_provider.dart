@@ -2,6 +2,7 @@ import 'package:favoriteplaces/data/fav_placedata.dart';
 import 'package:favoriteplaces/firestore_service.dart';
 import 'package:favoriteplaces/provider/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart' show StateNotifier, StateNotifierProvider;
 
 // Firestore Service Provider
 final firestoreServiceProvider = Provider((ref) => FirestoreService());

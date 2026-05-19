@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:favoriteplaces/data/fav_placedata.dart';
 
 class FavDetailScreen extends StatelessWidget {
@@ -15,12 +16,40 @@ class FavDetailScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.file(
-              favPlace.image,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 250,
-            ),
+            child: (kIsWeb)
+                ? (favPlace.imageUrl != null
+                    ? Image.network(
+                        favPlace.imageUrl!,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 250,
+                      )
+                    : Container(
+                        width: double.infinity,
+                        height: 250,
+                        color: Colors.grey[200],
+                        child: const Icon(Icons.image_not_supported, size: 64),
+                      ))
+                : (favPlace.image != null
+                    ? Image.file(
+                        favPlace.image!,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 250,
+                      )
+                    : (favPlace.imageUrl != null
+                        ? Image.network(
+                            favPlace.imageUrl!,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: 250,
+                          )
+                        : Container(
+                            width: double.infinity,
+                            height: 250,
+                            color: Colors.grey[200],
+                            child: const Icon(Icons.image_not_supported, size: 64),
+                          ))),
           ),
           const SizedBox(height: 20),
           Padding(

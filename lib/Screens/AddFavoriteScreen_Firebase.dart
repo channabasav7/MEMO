@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:favoriteplaces/data/fav_placedata.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,6 +22,7 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   File? _selectedImage;
+  Uint8List? _selectedImageBytes;
   final ImagePicker _picker = ImagePicker();
   final _formKey = GlobalKey<FormState>();
   double _uploadProgress = 0;
@@ -53,7 +56,9 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
       return;
     }
 
-    if (_selectedImage == null) {
+    final hasImage = kIsWeb ? _selectedImageBytes != null : _selectedImage != null;
+
+    if (!hasImage) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please add a photo first.')),
       );
@@ -70,7 +75,8 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
       final imageUrl = await storageService.uploadImage(
         userId: userId,
         placeId: placeId,
-        imageFile: _selectedImage!,
+        imageFile: _selectedImage,
+        imageBytes: _selectedImageBytes,
         onProgress: (progress) {
           setState(() => _uploadProgress = progress);
         },
@@ -126,9 +132,18 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
       );
 
       if (pickedImage == null) return;
-      setState(() {
-        _selectedImage = File(pickedImage.path);
-      });
+      if (kIsWeb) {
+        final bytes = await pickedImage.readAsBytes();
+        setState(() {
+          _selectedImageBytes = bytes;
+          _selectedImage = null;
+        });
+      } else {
+        setState(() {
+          _selectedImage = File(pickedImage.path);
+          _selectedImageBytes = null;
+        });
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error picking image: $e')),
@@ -201,10 +216,23 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: Image.file(
-                                      _selectedImage!,
-                                      fit: BoxFit.cover,
-                                    ),
+                                    child: kIsWeb
+                                        ? (_selectedImageBytes != null
+                                            ? Image.memory(
+                                                _selectedImageBytes!,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Container(
+                                                color: Colors.grey[200],
+                                                child: const Center(
+                                                  child: Icon(
+                                                      Icons.image_not_supported),
+                                                ),
+                                              ))
+                                        : Image.file(
+                                            _selectedImage!,
+                                            fit: BoxFit.cover,
+                                          ),
                                   ),
                                   if (_isUploading)
                                     Container(

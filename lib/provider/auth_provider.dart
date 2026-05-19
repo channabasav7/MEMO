@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:favoriteplaces/auth_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart' show StateNotifier, StateNotifierProvider;
 
 // Auth Service Provider
 final authServiceProvider = Provider((ref) => AuthService());

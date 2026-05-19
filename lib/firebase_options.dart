@@ -1,8 +1,15 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
 
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
+    // For web builds, `dart:io` Platform APIs are unavailable.
+    // Return Android options as a safe default for web; replace with
+    // proper web FirebaseOptions if available.
+    if (kIsWeb) {
+      return android;
+    }
     if (Platform.isIOS) {
       return ios;
     }

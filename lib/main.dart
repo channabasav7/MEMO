@@ -1,1 +1,3 @@
-import 'package:favoriteplaces/app.dart';
+import 'package:favoriteplaces/app.dart' as app;
+
+void main() => app.main();

@@ -1,6 +1,7 @@
 import 'package:favoriteplaces/Screens/AddFavoriteScreen.dart';
 import 'package:favoriteplaces/Screens/Fav_detailScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -97,12 +98,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.file(
-                              place.image,
-                              fit: BoxFit.cover,
-                              width: 64,
-                              height: 64,
-                            ),
+                            child: kIsWeb
+                                ? (place.imageUrl != null
+                                    ? Image.network(
+                                        place.imageUrl!,
+                                        fit: BoxFit.cover,
+                                        width: 64,
+                                        height: 64,
+                                      )
+                                    : Container(
+                                        width: 64,
+                                        height: 64,
+                                        color: Colors.grey[200],
+                                        child:
+                                            const Icon(Icons.image_not_supported),
+                                      ))
+                                : (place.image != null
+                                    ? Image.file(
+                                        place.image!,
+                                        fit: BoxFit.cover,
+                                        width: 64,
+                                        height: 64,
+                                      )
+                                    : (place.imageUrl != null
+                                        ? Image.network(
+                                            place.imageUrl!,
+                                            fit: BoxFit.cover,
+                                            width: 64,
+                                            height: 64,
+                                          )
+                                        : Container(
+                                            width: 64,
+                                            height: 64,
+                                            color: Colors.grey[200],
+                                            child: const Icon(
+                                                Icons.image_not_supported),
+                                          ))),
                           ),
                           const SizedBox(width: 12),
                           Expanded(

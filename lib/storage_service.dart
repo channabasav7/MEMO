@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:typed_data';
 
 class StorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -10,14 +11,18 @@ class StorageService {
   Future<String> uploadImage({
     required String userId,
     required String placeId,
-    required File imageFile,
+    File? imageFile,
+    Uint8List? imageBytes,
     Function(double)? onProgress,
   }) async {
     try {
-      final fileName =
-          '${DateTime.now().millisecondsSinceEpoch}_${imageFile.path.split('/').last}';
-      final ref = _storage.ref().child(placesFolder).child(userId).child(fileName);
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      String fileName;
+      Reference ref;
 
+      if (imageFile != null) {
+        fileName = '${timestamp}_${imageFile.path.split('/').last}';
+        ref = _storage.ref().child(placesFolder).child(userId).child(fileName);
       final uploadTask = ref.putFile(imageFile);
 
       uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
@@ -26,6 +31,21 @@ class StorageService {
       });
 
       await uploadTask;
+      } else if (imageBytes != null) {
+        fileName = '${timestamp}_upload.jpg';
+        ref = _storage.ref().child(placesFolder).child(userId).child(fileName);
+        final uploadTask = ref.putData(imageBytes, SettableMetadata(contentType: 'image/jpeg'));
+
+        uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+          final progress = (snapshot.bytesTransferred / snapshot.totalBytes);
+          onProgress?.call(progress);
+        });
+
+        await uploadTask;
+      } else {
+        throw 'No image provided';
+      }
+
       final downloadUrl = await ref.getDownloadURL();
       return downloadUrl;
     } catch (e) {

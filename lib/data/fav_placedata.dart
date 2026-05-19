@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FavPlace {
   final String id;
@@ -93,5 +94,3 @@ class FavPlace {
     );
   }
 }
-
-import 'package:cloud_firestore/cloud_firestore.dart';

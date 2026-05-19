@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:favoriteplaces/data/fav_placedata.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -179,12 +180,19 @@ class _ImagePickerCard extends StatelessWidget {
                 ),
               ],
             )
-          : Stack(
+                : Stack(
               fit: StackFit.expand,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(18),
-                  child: Image.file(selectedImage!, fit: BoxFit.cover),
+                  child: kIsWeb
+                      ? Container(
+                          color: Colors.grey[200],
+                          child: const Center(
+                            child: Icon(Icons.image_not_supported, size: 48),
+                          ),
+                        )
+                      : Image.file(selectedImage!, fit: BoxFit.cover),
                 ),
                 Positioned(
                   right: 12,

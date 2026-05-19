@@ -20,7 +20,7 @@ class PlaceCardSkeleton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.grey[300],
               ),
-            ).animate(repeat: 1500).shimmer(
+            ).animate().shimmer(
               duration: const Duration(seconds: 1),
               color: Colors.grey[100],
             ),
@@ -36,7 +36,7 @@ class PlaceCardSkeleton extends StatelessWidget {
                       borderRadius: BorderRadius.circular(6),
                       color: Colors.grey[300],
                     ),
-                  ).animate(repeat: 1500).shimmer(
+                  ).animate().shimmer(
                     duration: const Duration(seconds: 1),
                     color: Colors.grey[100],
                   ),
@@ -47,7 +47,7 @@ class PlaceCardSkeleton extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                       color: Colors.grey[300],
                     ),
-                  ).animate(repeat: 1500).shimmer(
+                  ).animate().shimmer(
                     duration: const Duration(seconds: 1),
                     color: Colors.grey[100],
                   ),

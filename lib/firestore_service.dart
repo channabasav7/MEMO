@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:favoriteplaces/data/fav_placedata.dart';
+import 'package:favoriteplaces/data/message.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -106,4 +107,53 @@ class FirestoreService {
       throw 'Failed to search places: $e';
     }
   }
+
+  // ------------------ Messages ------------------
+  static const String messagesCollection = 'messages';
+
+  /// Add a message for a user (optionally with an imageUrl)
+  Future<String> addMessage(String userId, Message message) async {
+    try {
+      final docRef = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection(messagesCollection)
+          .add(message.toMap());
+      return docRef.id;
+    } catch (e) {
+      throw 'Failed to add message: $e';
+    }
+  }
+
+  /// Stream messages for a user (ordered by createdAt)
+  Stream<List<Message>> getUserMessagesStream(String userId) {
+    try {
+      return _firestore
+          .collection('users')
+          .doc(userId)
+          .collection(messagesCollection)
+          .orderBy('createdAt', descending: true)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Message.fromMap({...doc.data(), 'id': doc.id}))
+              .toList());
+    } catch (e) {
+      throw 'Failed to stream messages: $e';
+    }
+  }
+
+  /// Delete a message
+  Future<void> deleteMessage(String userId, String docId) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection(messagesCollection)
+          .doc(docId)
+          .delete();
+    } catch (e) {
+      throw 'Failed to delete message: $e';
+    }
+  }
+
 }
