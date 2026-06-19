@@ -1,5 +1,5 @@
-import 'package:favoriteplaces/Screens/AddFavoriteScreen.dart';
-import 'package:favoriteplaces/Screens/Fav_detailScreen.dart';
+import 'package:favoriteplaces/screens/add_favorite_screen.dart';
+import 'package:favoriteplaces/screens/fav_detail_screen.dart';
 import 'package:favoriteplaces/provider/auth_provider.dart';
 import 'package:favoriteplaces/provider/favorites_provider.dart';
 import 'package:flutter/material.dart';

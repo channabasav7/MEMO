@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:math';
 
 import 'package:favoriteplaces/data/fav_placedata.dart';
 import 'package:favoriteplaces/provider/auth_provider.dart';
@@ -71,9 +72,12 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
     setState(() => _isSaving = true);
 
     try {
+      final timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+      final random = Random().nextInt(10000).toString().padLeft(4, '0');
+      final docId = '${timestamp}_$random';
       final place = FavPlace(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        docId: DateTime.now().millisecondsSinceEpoch.toString(),
+        id: docId,
+        docId: docId,
         userId: userId,
         title: _titleController.text.trim(),
         note: _noteController.text.trim(),

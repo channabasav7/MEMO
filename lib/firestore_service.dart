@@ -39,7 +39,7 @@ class FirestoreService {
     try {
       final snapshot = await getUserPlacesCollection(userId).get();
       return snapshot.docs
-          .map((doc) => FavPlace.fromMap({...doc.data(), 'docId': doc.id}))
+          .map((doc) => FavPlace.fromMap({...doc.data(), 'id': doc.id, 'docId': doc.id}))
           .toList();
     } catch (e) {
       throw 'Failed to fetch places: $e';
@@ -54,7 +54,7 @@ class FirestoreService {
           .snapshots()
           .map((snapshot) => snapshot.docs
               .map((doc) =>
-                  FavPlace.fromMap({...doc.data(), 'docId': doc.id}))
+                  FavPlace.fromMap({...doc.data(), 'id': doc.id, 'docId': doc.id}))
               .toList());
     } catch (e) {
       throw 'Failed to stream places: $e';
@@ -96,7 +96,7 @@ class FirestoreService {
       final snapshot =
           await getUserPlacesCollection(userId).get();
       final allPlaces = snapshot.docs
-          .map((doc) => FavPlace.fromMap({...doc.data(), 'docId': doc.id}))
+          .map((doc) => FavPlace.fromMap({...doc.data(), 'id': doc.id, 'docId': doc.id}))
           .toList();
       
       return allPlaces

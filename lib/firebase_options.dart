@@ -19,11 +19,11 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'YOUR_ANDROID_API_KEY',
-    appId: 'YOUR_ANDROID_APP_ID',
-    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
-    projectId: 'YOUR_PROJECT_ID',
-    storageBucket: 'YOUR_STORAGE_BUCKET',
+    apiKey: 'AIzaSyAyKckMH84nZWQbAIJS7ipnq7MiIuK3btE',
+    appId: '1:496082759757:android:f0f0e15dfea1760ae8ac04',
+    messagingSenderId: '496082759757',
+    projectId: 'memo-8645c',
+    storageBucket: 'memo-8645c.firebasestorage.app',
   );
 
   static const FirebaseOptions web = FirebaseOptions(

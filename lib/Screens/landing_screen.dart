@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'web_view_page.dart';
 
 class LandingScreen extends ConsumerWidget {
   const LandingScreen({super.key});
@@ -94,6 +95,21 @@ class LandingScreen extends ConsumerWidget {
                       onPressed: () => _goToSignup(context),
                       icon: const Icon(Icons.person_add_outlined),
                       label: const Text('Create Account'),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const WebViewPage(
+                                  url: 'https://example.com',
+                                  title: 'Website',
+                                )));
+                      },
+                      icon: const Icon(Icons.public_outlined),
+                      label: const Text('Open Website'),
                     ),
                   ),
                   const SizedBox(height: 10),

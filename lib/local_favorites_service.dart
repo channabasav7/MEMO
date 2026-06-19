@@ -33,18 +33,18 @@ class LocalFavoritesService {
     await saveUserPlaces(userId, [...places, place]);
   }
 
-  Future<void> deletePlace(String userId, String placeId) async {
+  Future<void> deletePlace(String userId, String docId) async {
     final places = await getUserPlaces(userId);
     await saveUserPlaces(
       userId,
-      places.where((place) => place.id != placeId).toList(),
+      places.where((place) => place.docId != docId).toList(),
     );
   }
 
-  Future<void> updatePlace(String userId, String placeId, FavPlace updatedPlace) async {
+  Future<void> updatePlace(String userId, String docId, FavPlace updatedPlace) async {
     final places = await getUserPlaces(userId);
     final updated = places
-        .map((place) => place.id == placeId ? updatedPlace.copyWith(id: placeId) : place)
+        .map((place) => place.docId == docId ? updatedPlace.copyWith(id: docId, docId: docId) : place)
         .toList();
     await saveUserPlaces(userId, updated);
   }

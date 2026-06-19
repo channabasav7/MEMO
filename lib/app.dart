@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:favoriteplaces/provider/auth_provider.dart';
 
-import 'Screens/LandingScreen.dart';
-import 'Screens/HomeScreen.dart';
-import 'Screens/LoginScreen.dart';
-import 'Screens/SignupScreen.dart';
+import 'Screens/landing_screen.dart';
+import 'Screens/home_screen.dart';
+import 'Screens/login_screen.dart';
+import 'Screens/signup_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(ProviderScope(child: const MyApp()));
+  // On web we must provide FirebaseOptions; on Android/iOS the
+  // native google-services files will be used, so initialize without options.
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } else {
+    await Firebase.initializeApp();
+  }
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -99,7 +106,7 @@ class AuthWrapper extends ConsumerWidget {
     if (authState.isLoggedIn) {
       return const HomeScreen();
     } else {
-      return const LandingScreen();
+      return const LoginScreen();
     }
   }
 }

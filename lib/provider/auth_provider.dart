@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:favoriteplaces/auth_service.dart';
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart' show StateNotifier, StateNotifierProvider;
 
@@ -49,9 +51,15 @@ class AuthState {
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthService _authService;
+  late final StreamSubscription<User?> _authSub;
 
   AuthNotifier(this._authService) : super(AuthState()) {
+    // initialize current state
     _checkAuthState();
+    // listen for auth state changes and update state accordingly
+    _authSub = _authService.authStateChanges.listen((user) {
+      state = state.copyWith(isLoggedIn: user != null, user: user);
+    });
   }
 
   void _checkAuthState() {
@@ -129,6 +137,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
       rethrow;
     }
+  }
+
+  @override
+  void dispose() {
+    _authSub.cancel();
+    super.dispose();
   }
 }
 
