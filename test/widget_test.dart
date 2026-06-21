@@ -2,8 +2,17 @@ import 'package:favoriteplaces/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_core_platform_interface/test.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  setupFirebaseCoreMocks();
+
+  setUpAll(() async {
+    await Firebase.initializeApp();
+  });
+
   testWidgets('App landing and login screen smoke test', (WidgetTester tester) async {
     // Build our app wrapped in ProviderScope and trigger a frame.
     await tester.pumpWidget(
