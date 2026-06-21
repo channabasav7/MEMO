@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:io' show Platform;
 import 'package:favoriteplaces/provider/auth_provider.dart';
 
 import 'Screens/landing_screen.dart';
@@ -12,9 +13,9 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // On web we must provide FirebaseOptions; on Android/iOS the
+  // On web and Windows we must provide FirebaseOptions; on Android/iOS the
   // native google-services files will be used, so initialize without options.
-  if (kIsWeb) {
+  if (kIsWeb || Platform.isWindows) {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );

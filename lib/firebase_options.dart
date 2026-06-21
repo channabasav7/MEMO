@@ -13,6 +13,9 @@ class DefaultFirebaseOptions {
     if (Platform.isAndroid) {
       return android;
     }
+    if (Platform.isWindows) {
+      return web;
+    }
     throw UnsupportedError(
       'DefaultFirebaseOptions are not supported for this platform.',
     );
