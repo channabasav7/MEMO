@@ -20,6 +20,7 @@ void main() {
         child: MyApp(),
       ),
     );
+    await tester.pumpAndSettle();
 
     // Verify that the login screen is presented when not signed in
     expect(find.text('Welcome Back'), findsOneWidget);

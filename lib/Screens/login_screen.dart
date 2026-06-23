@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:favoriteplaces/provider/auth_provider.dart';
 import 'package:favoriteplaces/widgets.dart';
 
@@ -77,6 +78,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           SnackBar(
             content: Text(e.toString()),
             backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
         );
       }
@@ -87,7 +90,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final email = _emailController.text.trim();
     if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter your email first.')),
+        SnackBar(
+          content: const Text('Enter your email first.'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
       );
       return;
     }
@@ -96,12 +103,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await ref.read(authProvider.notifier).sendPasswordReset(email);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password reset email sent.')),
+        SnackBar(
+          content: const Text('Password reset email sent.'),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
       );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
       );
     }
   }
@@ -120,71 +137,107 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFFFCECC5),
-                  Color(0xFFF7B267),
-                  Color(0xFFE07A5F),
+                  Color(0xFFFFF9F5),
+                  Color(0xFFFDF0E6),
+                  Color(0xFFFBE2D3),
                 ],
               ),
             ),
           ),
           Positioned(
-            right: -60,
-            top: -40,
+            right: -50,
+            top: -30,
             child: Container(
-              width: 180,
-              height: 180,
+              width: 200,
+              height: 200,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0x33FFFFFF),
+                color: Color(0x1AE07A5F),
+              ),
+            ),
+          ),
+          Positioned(
+            left: -40,
+            bottom: -20,
+            child: Container(
+              width: 160,
+              height: 160,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0x1A81B29A),
               ),
             ),
           ),
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 520),
+                  constraints: const BoxConstraints(maxWidth: 480),
                   child: Card(
                     elevation: 0,
-                    color: Colors.white.withValues(alpha: 0.92),
+                    color: Colors.white.withOpacity(0.92),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
+                      borderRadius: BorderRadius.circular(32),
+                      side: const BorderSide(color: Color(0xFFF0EAE1), width: 1.5),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(32),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF2B2118).withOpacity(0.08),
+                            blurRadius: 32,
+                            offset: const Offset(0, 16),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(28),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 56,
-                            height: 56,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xFFFDE8DD),
+                          Center(
+                            child: Container(
+                              width: 64,
+                              height: 64,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFFFDE8DD),
+                              ),
+                              child: const Icon(
+                                Icons.place_outlined,
+                                color: Color(0xFFE07A5F),
+                                size: 28,
+                              ),
                             ),
-                            child: const Icon(Icons.place_outlined, color: Color(0xFFE07A5F)),
                           ),
-                          const SizedBox(height: 18),
-                          Text(
-                            'Welcome Back',
-                            style: theme.textTheme.headlineMedium?.copyWith(
-                              color: const Color(0xFF2B2118),
-                              fontWeight: FontWeight.w800,
+                          const SizedBox(height: 20),
+                          Center(
+                            child: Text(
+                              'Welcome Back',
+                              style: theme.textTheme.headlineMedium?.copyWith(
+                                color: const Color(0xFF2B2118),
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Text(
-                            'Sign in to access your favorite places and keep your memories organized.',
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: const Color(0xFF3D2F22),
+                          Center(
+                            child: Text(
+                              'Sign in to access your travel journals and spots.',
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: const Color(0xFF6C5D50),
+                              ),
                             ),
                           ),
-                          const SizedBox(height: 28),
+                          const SizedBox(height: 32),
                           Text(
-                            'Email',
+                            'Email Address',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF2B2118),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -195,14 +248,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             decoration: InputDecoration(
                               hintText: 'your@email.com',
                               errorText: _emailError,
-                              prefixIcon: const Icon(Icons.email_outlined),
+                              prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFF8E8071)),
                             ),
                           ),
-                          const SizedBox(height: 18),
+                          const SizedBox(height: 20),
                           Text(
                             'Password',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF2B2118),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -213,12 +267,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             decoration: InputDecoration(
                               hintText: 'Enter your password',
                               errorText: _passwordError,
-                              prefixIcon: const Icon(Icons.lock_outlined),
+                              prefixIcon: const Icon(Icons.lock_outlined, color: Color(0xFF8E8071)),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _obscurePassword
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
+                                  color: const Color(0xFF8E8071),
                                 ),
                                 onPressed: () {
                                   setState(() => _obscurePassword = !_obscurePassword);
@@ -231,10 +286,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed: authState.isLoading ? null : _handleForgotPassword,
+                              style: TextButton.styleFrom(
+                                foregroundColor: const Color(0xFFE07A5F),
+                                textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
                               child: const Text('Forgot password?'),
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
@@ -251,15 +310,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   : const Text('Sign In'),
                             ),
                           ),
-                          const SizedBox(height: 14),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          const SizedBox(height: 20),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
-                              Text('Don\'t have an account? ', style: theme.textTheme.bodySmall),
+                              Text(
+                                'Don\'t have an account? ',
+                                style: theme.textTheme.bodyMedium?.copyWith(color: const Color(0xFF6C5D50)),
+                              ),
                               TextButton(
                                 onPressed: authState.isLoading
                                     ? null
                                     : () => Navigator.of(context).pushReplacementNamed('/signup'),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: const Color(0xFFE07A5F),
+                                  textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                ),
                                 child: const Text('Sign Up'),
                               ),
                             ],
@@ -268,7 +336,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                   ),
-                ),
+                ).animate().fade(duration: 400.ms).slideY(begin: 0.05, end: 0, curve: Curves.easeOut),
               ),
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'web_view_page.dart';
 
 class LandingScreen extends ConsumerWidget {
@@ -27,26 +28,26 @@ class LandingScreen extends ConsumerWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFFFCECC5),
-                  Color(0xFFF7B267),
-                  Color(0xFFE07A5F),
+                  Color(0xFFFFF9F5),
+                  Color(0xFFFDF0E6),
+                  Color(0xFFFBE2D3),
                 ],
               ),
             ),
           ),
           Positioned(
-            right: -60,
-            top: -40,
-            child: _GlowCircle(diameter: 180, color: Color(0x33FFFFFF)),
+            right: -40,
+            top: -20,
+            child: _GlowCircle(diameter: 220, color: const Color(0x1AE07A5F)),
           ),
           Positioned(
-            left: -40,
-            bottom: 80,
-            child: _GlowCircle(diameter: 140, color: Color(0x22FFFFFF)),
+            left: -50,
+            bottom: 120,
+            child: _GlowCircle(diameter: 180, color: const Color(0x1A81B29A)),
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+              padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -54,74 +55,80 @@ class LandingScreen extends ConsumerWidget {
                     'Favorite Places',
                     style: theme.textTheme.headlineLarge?.copyWith(
                       color: const Color(0xFF2B2118),
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.4,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: -0.5,
                     ),
-                  ),
+                  ).animate().fade(duration: 500.ms).slideY(begin: 0.1, end: 0),
                   const SizedBox(height: 8),
                   Text(
-                    'Capture memories, add a note, and keep a beautiful map of moments.',
+                    'Capture memories, add custom notes, and map the moments that matter to you.',
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: const Color(0xFF3D2F22),
+                      color: const Color(0xFF5A4D41),
+                      height: 1.4,
                     ),
-                  ),
-                  const SizedBox(height: 24),
+                  ).animate().fade(delay: 150.ms, duration: 500.ms).slideY(begin: 0.1, end: 0),
+                  const SizedBox(height: 32),
                   Expanded(
                     child: Center(
-                      child: TweenAnimationBuilder<double>(
-                        tween: Tween(begin: 0.92, end: 1),
-                        duration: const Duration(milliseconds: 800),
-                        curve: Curves.easeOut,
-                        builder: (context, value, child) {
-                          return Transform.scale(scale: value, child: child);
-                        },
-                        child: _HeroCard(size: size),
+                      child: _HeroCard(size: size)
+                          .animate()
+                          .fade(delay: 300.ms, duration: 600.ms)
+                          .scale(begin: const Offset(0.95, 0.95), end: const Offset(1, 1), curve: Curves.easeOutBack)
+                          .slideY(begin: 0.1, end: 0),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  Column(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _goToLogin(context),
+                          icon: const Icon(Icons.login_outlined, size: 20),
+                          label: const Text('Sign In to Account'),
+                        ),
                       ),
-                    ),
-                  ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () => _goToSignup(context),
+                          icon: const Icon(Icons.person_add_outlined, size: 20),
+                          label: const Text('Create New Account'),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const WebViewPage(
+                                      url: 'https://example.com',
+                                      title: 'Website',
+                                    )));
+                          },
+                          icon: const Icon(Icons.public_outlined, size: 18),
+                          label: const Text('Open Companion Website'),
+                          style: TextButton.styleFrom(
+                            foregroundColor: const Color(0xFF6C5D50),
+                            textStyle: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ).animate().fade(delay: 450.ms, duration: 500.ms).slideY(begin: 0.1, end: 0),
                   const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () => _goToLogin(context),
-                      icon: const Icon(Icons.login_outlined),
-                      label: const Text('Sign In'),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: () => _goToSignup(context),
-                      icon: const Icon(Icons.person_add_outlined),
-                      label: const Text('Create Account'),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const WebViewPage(
-                                  url: 'https://example.com',
-                                  title: 'Website',
-                                )));
-                      },
-                      icon: const Icon(Icons.public_outlined),
-                      label: const Text('Open Website'),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
                   Center(
                     child: Text(
-                      'Your favorites stay on this device until you delete them.',
+                      'Your memory vault is kept secure and localized.',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: const Color(0xFF4A3A2C),
+                        color: const Color(0xFF8E8071),
+                        fontWeight: FontWeight.w500,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                  ),
+                  ).animate().fade(delay: 600.ms, duration: 400.ms),
                 ],
               ),
             ),
@@ -141,15 +148,15 @@ class _HeroCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: size.width * 0.86,
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: const [
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
           BoxShadow(
-            color: Color(0x33000000),
-            blurRadius: 18,
-            offset: Offset(0, 10),
+            color: const Color(0xFF2B2118).withOpacity(0.08),
+            blurRadius: 24,
+            offset: const Offset(0, 12),
           ),
         ],
       ),
@@ -157,41 +164,74 @@ class _HeroCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            height: 160,
+            height: 200,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(20),
               gradient: const LinearGradient(
-                colors: [Color(0xFF84A98C), Color(0xFF52796F)],
+                colors: [Color(0xFFE07A5F), Color(0xFF81B29A)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFE07A5F).withOpacity(0.15),
+                  blurRadius: 16,
+                  offset: const Offset(0, 8),
+                ),
+              ],
             ),
             child: const Center(
-              child: Icon(Icons.photo_camera_outlined, size: 64, color: Colors.white),
+              child: Icon(
+                Icons.landscape_outlined,
+                size: 64,
+                color: Colors.white,
+              ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Row(
-            children: const [
-              Icon(Icons.place_outlined, color: Color(0xFFE07A5F)),
-              SizedBox(width: 8),
-              Expanded(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFFDE8DD),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.place_outlined, color: Color(0xFFE07A5F), size: 20),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
                 child: Text(
-                  'Save the places that matter and revisit them anytime.',
-                  style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w600),
+                  'Log your favorite spots with visual memories.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF2B2118),
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Row(
-            children: const [
-              Icon(Icons.note_alt_outlined, color: Color(0xFFE07A5F)),
-              SizedBox(width: 8),
-              Expanded(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFE8F3ED),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.note_alt_outlined, color: Color(0xFF81B29A), size: 20),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
                 child: Text(
-                  'Add a short note so every photo tells a story.',
-                  style: TextStyle(fontSize: 15.5),
+                  'Write journals for each memory to tell its story.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF5A4D41),
+                  ),
                 ),
               ),
             ],

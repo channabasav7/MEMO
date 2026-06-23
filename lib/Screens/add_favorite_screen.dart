@@ -53,7 +53,11 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
 
     if (userId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please sign in first.')),
+        SnackBar(
+          content: const Text('Please sign in first.'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
       );
       return;
     }
@@ -64,7 +68,12 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
 
     if (_imageBytes == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please add a photo first.')),
+        SnackBar(
+          content: const Text('Please add a photo first.'),
+          backgroundColor: const Color(0xFFE07A5F),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
       );
       return;
     }
@@ -93,9 +102,11 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Saved locally on this device.'),
+        SnackBar(
+          content: const Text('Saved to your collection.'),
           backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       );
       Navigator.of(context).pop();
@@ -105,6 +116,8 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
         SnackBar(
           content: Text('Could not save place: $e'),
           backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       );
     } finally {
@@ -122,19 +135,12 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
         height: 220,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: const Color(0xFFFFFBF6),
+          color: const Color(0xFFF5F2EC),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: _imageBytes == null ? const Color(0xFFE6D3BE) : const Color(0xFFE07A5F),
-            width: 1.4,
+            color: _imageBytes == null ? const Color(0xFFECE7DF) : const Color(0xFFE07A5F),
+            width: 1.5,
           ),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x14000000),
-              blurRadius: 18,
-              offset: Offset(0, 8),
-            ),
-          ],
         ),
         child: _imageBytes == null
             ? Column(
@@ -156,22 +162,29 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
                   Text(
                     'Add a photo',
                     style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 4),
                   Text(
-                    'Your image stays on this device until you delete it.',
+                    'Your image stays on this device.',
                     textAlign: TextAlign.center,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[700],
+                      color: const Color(0xFF8E8071),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 14),
                   FilledButton.icon(
                     onPressed: _pickImage,
-                    icon: const Icon(Icons.upload_outlined),
+                    icon: const Icon(Icons.upload_outlined, size: 18),
                     label: const Text('Choose Image'),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: const Color(0xFFE07A5F),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    ),
                   ),
                 ],
               )
@@ -193,7 +206,7 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withValues(alpha: 0.35),
+                          Colors.black.withOpacity(0.4),
                         ],
                       ),
                     ),
@@ -202,18 +215,26 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
                     left: 16,
                     bottom: 16,
                     child: Chip(
-                      avatar: const Icon(Icons.check_circle, size: 18, color: Colors.white),
-                      label: const Text('Preview ready', style: TextStyle(color: Colors.white)),
-                      backgroundColor: Colors.black45,
+                      avatar: const Icon(Icons.check_circle, size: 16, color: Colors.white),
+                      label: const Text('Image ready', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                      backgroundColor: Colors.black54,
+                      side: BorderSide.none,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
                   Positioned(
                     right: 12,
                     top: 12,
-                    child: FilledButton.tonalIcon(
+                    child: FilledButton.icon(
                       onPressed: _pickImage,
-                      icon: const Icon(Icons.edit_outlined),
+                      icon: const Icon(Icons.edit_outlined, size: 16),
                       label: const Text('Replace'),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.9),
+                        foregroundColor: const Color(0xFF2B2118),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      ),
                     ),
                   ),
                 ],
@@ -229,8 +250,11 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Favorite Place'),
-        centerTitle: false,
+        title: const Text('Add Memory'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, size: 18),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: Stack(
         children: [
@@ -239,52 +263,64 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFFFDF6EC), Color(0xFFFFFBF6)],
+                colors: [Color(0xFFFBF9F6), Colors.white],
               ),
             ),
           ),
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 760),
+                  constraints: const BoxConstraints(maxWidth: 680),
                   child: Card(
                     elevation: 0,
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
+                      borderRadius: BorderRadius.circular(32),
+                      side: const BorderSide(color: Color(0xFFF0EAE1), width: 1.5),
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.all(isDesktop ? 28 : 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(32),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF2B2118).withOpacity(0.06),
+                            blurRadius: 24,
+                            offset: const Offset(0, 12),
+                          ),
+                        ],
+                      ),
+                      padding: EdgeInsets.all(isDesktop ? 32 : 24),
                       child: Form(
                         key: _formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Create a memory',
+                              'Document a Memory',
                               style: theme.textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.w900,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 6),
                             Text(
-                              'Keep favorite places stored inside the app until you delete them.',
+                              'Log the special place locally inside your journal.',
                               style: theme.textTheme.bodyMedium?.copyWith(
-                                color: Colors.grey[700],
+                                color: const Color(0xFF6C5D50),
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 28),
                             _buildImageCard(theme),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 28),
                             TextFormField(
                               controller: _titleController,
                               enabled: !_isSaving,
                               textInputAction: TextInputAction.next,
                               decoration: const InputDecoration(
-                                labelText: 'Place title',
-                                prefixIcon: Icon(Icons.place_outlined),
+                                labelText: 'Place Title',
+                                prefixIcon: Icon(Icons.place_outlined, color: Color(0xFF8E8071)),
                               ),
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
@@ -293,14 +329,14 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
                                 return null;
                               },
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 20),
                             TextFormField(
                               controller: _noteController,
                               enabled: !_isSaving,
                               maxLines: 4,
                               decoration: const InputDecoration(
-                                labelText: 'Note',
-                                prefixIcon: Icon(Icons.note_alt_outlined),
+                                labelText: 'Journal Note',
+                                prefixIcon: Icon(Icons.note_alt_outlined, color: Color(0xFF8E8071)),
                                 alignLabelWithHint: true,
                               ),
                               validator: (value) {
@@ -310,17 +346,17 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
                                 return null;
                               },
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 20),
                             TextFormField(
                               controller: _addressController,
                               enabled: !_isSaving,
                               textInputAction: TextInputAction.done,
                               decoration: const InputDecoration(
-                                labelText: 'Location / address (optional)',
-                                prefixIcon: Icon(Icons.location_on_outlined),
+                                labelText: 'Address / Description (optional)',
+                                prefixIcon: Icon(Icons.location_on_outlined, color: Color(0xFF8E8071)),
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 32),
                             Row(
                               children: [
                                 Expanded(
@@ -329,27 +365,34 @@ class _AddFavoriteScreenState extends ConsumerState<AddFavoriteScreen> {
                                     child: const Text('Cancel'),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                const SizedBox(width: 16),
                                 Expanded(
-                                  child: FilledButton.icon(
+                                  child: ElevatedButton(
                                     onPressed: _isSaving ? null : _savePlace,
-                                    icon: _isSaving
+                                    child: _isSaving
                                         ? const SizedBox(
-                                            height: 18,
-                                            width: 18,
-                                            child: CircularProgressIndicator(strokeWidth: 2),
+                                            height: 20,
+                                            width: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                            ),
                                           )
-                                        : const Icon(Icons.save_outlined),
-                                    label: Text(_isSaving ? 'Saving...' : 'Save place'),
+                                        : const Text('Save Place'),
                                   ),
                                 ),
                               ],
                             ),
                             if (!kIsWeb) ...[
-                              const SizedBox(height: 14),
-                              Text(
-                                'Tip: the photo is stored locally on your device and stays there until you delete it.',
-                                style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[700]),
+                              const SizedBox(height: 16),
+                              Center(
+                                child: Text(
+                                  'This photo stays locally on your device.',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: const Color(0xFF8E8071),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
                             ],
                           ],
